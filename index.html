@@ -3,55 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Water Intake Tracker</title>
+    <title>Water Tracker</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background: linear-gradient(135deg, #a8e6ff, #c0e8ff);
-            padding: 20px;
-        }
-
-        .container {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            max-width: 300px;
-            margin: auto;
-        }
-
-        h2 {
-            color: #0077b6;
-        }
-
-        input, button {
-            margin: 8px;
-            padding: 8px;
-            font-size: 16px;
-        }
-
-        button {
-            background: #0077b6;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        #reset {
-            background: #d32f2f;
-        }
+        body { font-family: Arial, sans-serif; text-align: center; background: linear-gradient(135deg, #a8e6ff, #c0e8ff); padding: 20px; }
+        .container { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.2); max-width: 300px; margin: auto; }
+        input, button { margin: 8px; padding: 8px; font-size: 16px; }
+        button { background: #0077b6; color: white; border: none; cursor: pointer; border-radius: 5px; }
+        #reset { background: #d32f2f; }
     </style>
 </head>
 <body>
-
     <div class="container">
         <h2>Water Tracker 🚰</h2>
-        <p>Set Your Goal (ml): <input type="number" id="goalInput" placeholder="e.g. 2000"></p>
-        <button onclick="setGoal()">Set Goal</button>
-        <p>Goal: <span id="goal">0</span> ml</p>
-        <p>Intake: <span id="totalIntake">0</span> ml</p>
+        <p>Goal: <input type="number" id="goalInput" placeholder="e.g. 2000"> <button onclick="setGoal()">Set</button></p>
+        <p>Intake: <span id="totalIntake">0</span> / <span id="goal">0</span> ml</p>
         <input type="number" id="waterAmount" placeholder="Enter ml">
         <br>
         <button onclick="addWater()">Add</button>
@@ -59,45 +24,25 @@
     </div>
 
     <script>
-        let totalIntake = 0;
-        let goal = 0;
+        let totalIntake = 0, goal = 0;
+        const getVal = id => parseInt(document.getElementById(id).value) || 0;
+        const setText = (id, val) => document.getElementById(id).textContent = val;
 
-        function setGoal() {
-            let inputGoal = parseInt(document.getElementById("goalInput").value);
-            if (!isNaN(inputGoal) && inputGoal > 0) {
-                goal = inputGoal;
-                document.getElementById("goal").textContent = goal;
-            } else {
-                alert("Enter a valid goal!");
-            }
+        function setGoal() { 
+            if ((goal = getVal("goalInput")) > 0) setText("goal", goal); 
+            else alert("Enter a valid goal!"); 
         }
 
         function addWater() {
-            let amount = parseInt(document.getElementById("waterAmount").value);
-            if (!isNaN(amount) && amount > 0) {
-                totalIntake += amount;
-                document.getElementById("totalIntake").textContent = totalIntake;
-                checkGoal();
-            } else {
-                alert("Enter a valid amount!");
-            }
-            document.getElementById("waterAmount").value = "";
+            let amount = getVal("waterAmount");
+            if (amount > 0) {
+                setText("totalIntake", totalIntake += amount);
+                if (goal > 0 && totalIntake >= goal) alert("🎉 Goal Reached!");
+            } else alert("Enter a valid amount!");
         }
 
-        function checkGoal() {
-            if (goal > 0 && totalIntake >= goal) {
-                alert("🎉 Congratulations! You reached your goal!");
-            }
-        }
-
-        function resetWater() {
-            totalIntake = 0;
-            goal = 0;
-            document.getElementById("totalIntake").textContent = totalIntake;
-            document.getElementById("goal").textContent = goal;
-            document.getElementById("goalInput").value = "";
-        }
+        function resetWater() { totalIntake = goal = 0; ["totalIntake", "goal"].forEach(id => setText(id, 0)); }
     </script>
-
 </body>
 </html>
+
