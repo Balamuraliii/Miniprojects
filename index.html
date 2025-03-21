@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Intake Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #a8e6ff, #c0e8ff);
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            max-width: 300px;
+            margin: auto;
+        }
+
+        h2 {
+            color: #0077b6;
+        }
+
+        input, button {
+            margin: 8px;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            background: #0077b6;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #reset {
+            background: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Water Tracker 🚰</h2>
+        <p>Intake: <span id="totalIntake">0</span> ml</p>
+        <input type="number" id="waterAmount" placeholder="Enter ml">
+        <br>
+        <button onclick="addWater()">Add</button>
+        <button id="reset" onclick="resetWater()">Reset</button>
+    </div>
+
+    <script>
+        let totalIntake = 0;
+
+        function addWater() {
+            let amount = parseInt(document.getElementById("waterAmount").value);
+            if (!isNaN(amount) && amount > 0) {
+                totalIntake += amount;
+                document.getElementById("totalIntake").textContent = totalIntake;
+            } else {
+                alert("Enter a valid amount!");
+            }
+            document.getElementById("waterAmount").value = "";
+        }
+
+        function resetWater() {
+            totalIntake = 0;
+            document.getElementById("totalIntake").textContent = totalIntake;
+        }
+    </script>
+
+</body>
+</html>
